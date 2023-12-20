@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "311677663548",
+    "project_id": "kisisel-hedef-asistani-7350d",
+    "storage_bucket": "kisisel-hedef-asistani-7350d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311677663548:android:b6e43cd508775568d20639",
+        "android_client_info": {
+          "package_name": "com.example.kisisel_hedef_asistani"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmsAl-E9Y6dBRzRW-cp3Iw31YzxdiHkkk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
