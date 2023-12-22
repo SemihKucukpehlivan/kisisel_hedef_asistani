@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kisisel_hedef_asistani/screens/LoginAndSignUpScreen/signUpScreen.dart';
+import 'package:kisisel_hedef_asistani/screens/menuPage.dart';
+import 'package:kisisel_hedef_asistani/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -9,7 +12,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
-
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -38,27 +40,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         children: [
                           _buildTextInputContainer(
-                              controller: emailController, text: "E-Mail"),
+                              controller: emailController,
+                              text: "E-Mail",
+                              useObscureText: false),
                           const SizedBox(height: 18),
                           _buildTextInputContainer(
-                              controller: passwordController, text: "Password"),
+                            controller: passwordController,
+                            text: "Password",
+                            useObscureText: true,
+                          ),
                           const SizedBox(height: 18),
                           // Sign In Button
                           SizedBox(
                             height: 45,
                             width: MediaQuery.of(context).size.width * 0.8,
                             child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 27, 133, 1)),
-                                onPressed: () {},
-                                child: const Text(
-                                  "Sign In",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                  ),
-                                )),
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 27, 133, 1)),
+                              onPressed: () => AuthService().signIn(
+                                context,
+                                email: emailController.text,
+                                password: passwordController.text,
+                              ),
+                              child: const Text(
+                                "Sign In",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
                           ),
                           const Text(
                             "Or",
@@ -67,25 +79,37 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 18),
                           _buildSignButtons(
+                              onTop: () => AuthService()
+                                  .signInWithGoogle()
+                                  .then((value) => Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => MenuScreen(),
+                                      ))),
                               text: "Continue With Google",
                               images: "assets/images/google.png",
                               height: 30,
                               width: 30),
                           const SizedBox(height: 18),
                           _buildSignButtons(
+                              onTop: () {},
                               text: "Continue With Facebook",
                               images: "assets/images/apple.png",
                               width: 30,
                               height: 30),
                           const SizedBox(height: 18),
                           _buildSignButtons(
+                              onTop: () {},
                               text: "Continue With X",
                               images: "assets/images/x.png",
                               width: 30,
                               height: 20),
                           const SizedBox(height: 18),
                           TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => SignUpScreen(),
+                                ));
+                              },
                               child: const Row(
                                 children: [
                                   Text(
@@ -128,8 +152,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextInputContainer(
-      {required TextEditingController controller, required String text}) {
+  Widget _buildTextInputContainer({
+    required TextEditingController controller,
+    required String text,
+    required bool useObscureText,
+  }) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
@@ -142,12 +169,14 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             height: 45,
             child: TextFormField(
+              obscureText: useObscureText,
               controller: controller,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  filled: true),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                filled: true,
+              ),
             ),
           ),
         ],
@@ -159,12 +188,13 @@ class _LoginScreenState extends State<LoginScreen> {
       {required double width,
       required double height,
       required String text,
-      required String images}) {
+      required String images,
+      required VoidCallback onTop}) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.8,
       height: 45,
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: onTop,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

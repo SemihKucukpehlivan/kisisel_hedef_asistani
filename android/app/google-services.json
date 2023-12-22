@@ -12,7 +12,20 @@
           "package_name": "com.example.kisisel_hedef_asistani"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "311677663548-r4qj2j99i4ql08icplp5k9m3c555keha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kisisel_hedef_asistani",
+            "certificate_hash": "e59793a476bdc418e5fa88440d1d985902524336"
+          }
+        },
+        {
+          "client_id": "311677663548-earij4lm1geg3cujs8g3nmpjhn9bbm5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCmsAl-E9Y6dBRzRW-cp3Iw31YzxdiHkkk"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "311677663548-earij4lm1geg3cujs8g3nmpjhn9bbm5e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
