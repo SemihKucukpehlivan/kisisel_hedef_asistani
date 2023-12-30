@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,23 +10,34 @@ class AuthService {
   final firebaseAuth = FirebaseAuth.instance;
 
   Future<void> signUp({
+    required BuildContext context,
     required String name,
     required String email,
     required String password,
   }) async {
+    final navigator = Navigator.of(context);
+
     try {
       final UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
       if (userCredential.user != null) {
         registerUser(email: email, password: password, name: name);
+        navigator.push(
+          MaterialPageRoute(
+            builder: (context) => const MenuScreen(),
+          ),
+        );
       }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);
     }
   }
 
-  Future<void> signIn(BuildContext context,
-      {required String email, required String password}) async {
+  Future<void> signIn(
+    BuildContext context, {
+    required String email,
+    required String password,
+  }) async {
     final navigator = Navigator.of(context);
     try {
       final UserCredential userCredential = await firebaseAuth

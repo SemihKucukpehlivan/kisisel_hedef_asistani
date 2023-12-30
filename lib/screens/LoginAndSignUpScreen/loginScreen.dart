@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kisisel_hedef_asistani/screens/LoginAndSignUpScreen/signUpScreen.dart';
+import 'package:kisisel_hedef_asistani/screens/loginAndSignUpScreen/signUpScreen.dart';
 import 'package:kisisel_hedef_asistani/screens/menuScreen.dart';
 import 'package:kisisel_hedef_asistani/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kisisel_hedef_asistani/screens/LoginAndSignUpScreen/loginScreen.dart';
 import 'package:kisisel_hedef_asistani/services/auth_service.dart';
 
@@ -13,6 +14,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController eMailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    eMailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,19 +69,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           _buildTextInputContainer(
                               controller: fullNameController,
                               text: "Full Name",
-                              width: 0.8),
+                              isPassword: false),
                           _buildTextInputContainer(
                               controller: eMailController,
                               text: "E-Mail",
-                              width: 0.8),
+                              isPassword: false),
                           _buildTextInputContainer(
                               controller: passwordController,
                               text: "Password",
-                              width: 0.8),
+                              isPassword: true),
                           _buildTextInputContainer(
-                              controller: fullNameController,
+                              controller: confirmPasswordController,
                               text: "Confirm Password",
-                              width: 0.8),
+                              isPassword: true),
                           const SizedBox(height: 8),
                           //Sign Up Button
                           SizedBox(
@@ -78,10 +90,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       const Color.fromARGB(255, 27, 133, 1)),
-                              onPressed: () => AuthService().signUp(
-                                  name: fullNameController.text,
-                                  email: eMailController.text,
-                                  password: passwordController.text),
+                              onPressed: () {
+                                if (confirmPasswordController.text ==
+                                    passwordController.text) {
+                                  AuthService().signUp(
+                                      context: context,
+                                      name: fullNameController.text,
+                                      email: eMailController.text,
+                                      password: passwordController.text);
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Password doesn't match");
+                                }
+                              },
                               child: const Text(
                                 "Sign Up",
                                 style: TextStyle(
@@ -93,9 +114,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           TextButton(
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>LoginScreen(),
-                                ));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginScreen(),
+                                  ),
+                                );
                               },
                               child: const Row(
                                 children: [
@@ -130,10 +153,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildTextInputContainer({
     required TextEditingController controller,
     required String text,
-    required double width,
+    required bool isPassword,
   }) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * width,
+      width: MediaQuery.of(context).size.width * 0.8,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -144,6 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           SizedBox(
             height: 45,
             child: TextFormField(
+              obscureText: isPassword,
               controller: controller,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
