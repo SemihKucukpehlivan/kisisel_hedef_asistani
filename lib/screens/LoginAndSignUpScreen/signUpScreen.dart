@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kisisel_hedef_asistani/screens/LoginAndSignUpScreen/loginScreen.dart';
+import 'package:kisisel_hedef_asistani/screens/loginAndSignUpScreen/loginScreen.dart';
 import 'package:kisisel_hedef_asistani/services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {

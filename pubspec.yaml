@@ -39,8 +39,6 @@ dependencies:
   firebase_auth: ^4.15.3
   cloud_firestore: ^4.13.6
   fluttertoast: ^8.2.4
-  locator: ^0.0.0-dev.2
-  get_it: ^7.6.4
   google_sign_in: ^6.2.1
 
 dev_dependencies:

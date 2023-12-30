@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kisisel_hedef_asistani/screens/createTodo.dart';
+import 'package:kisisel_hedef_asistani/screens/createToDoScreen.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -7,31 +7,33 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("KSA"),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildCard(context, "Toplam Adım Sayar",CreateTodoScreen()),
-                  _buildCard(context, "Hedefler",CreateTodoScreen()),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildCard(context, "Grafikler",CreateTodoScreen()),
-                  _buildCard(context, "Takvim",CreateTodoScreen()),
-                ],
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("KSA"),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildCard(context, "Toplam Adım Sayar",CreateToDoScreen()),
+                    _buildCard(context, "Hedefler",CreateToDoScreen()),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildCard(context, "Grafikler",CreateToDoScreen()),
+                    _buildCard(context, "Takvim",CreateToDoScreen()),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

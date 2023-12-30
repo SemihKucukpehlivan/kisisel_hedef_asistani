@@ -8,7 +8,7 @@ class TextInputContainer extends StatelessWidget {
       {super.key,
       required this.label,
       required this.controller,
-      required this.hintText});
+      required this.hintText,});
 
   @override
   Widget build(BuildContext context) {
@@ -36,4 +36,5 @@ class TextInputContainer extends StatelessWidget {
       ],
     );
   }
+  
 }

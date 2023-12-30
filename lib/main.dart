@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kisisel_hedef_asistani/firebase_options.dart';
+import 'package:kisisel_hedef_asistani/screens/loginAndSignUpScreen/loginScreen.dart';
 import 'package:kisisel_hedef_asistani/screens/menuScreen.dart';
 
 void main() async {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home:  MenuScreen(),
+      home:  LoginScreen(),
     );
   }
 }
