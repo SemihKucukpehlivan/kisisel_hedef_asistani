@@ -10,7 +10,7 @@ class FirestoreService {
       CollectionReference todosCollection = firestore.collection('todos');
 
       await todosCollection.add({
-        'userId': userId,  // Ekledik: ToDo'nun hangi kullanıcıya ait olduğunu belirtmek için userId
+        'userId': userId,
         'title': todo.title,
         'description': todo.description,
         'deadline':todo.deadline,

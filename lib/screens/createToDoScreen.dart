@@ -27,7 +27,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Events Page"),
+        title: const Text("Create Events Page"),
       ),
       body: Column(children: [
         TextInputContainer(
@@ -44,6 +44,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
           label: "Deadline Date",
           controller: _dateController,
           hintText: "Please Enter Exercise Deadline",
+          isEnabled: false,
           onTap: _datePick,
         ),
         // Save Button
@@ -60,7 +61,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
                 userId: userId,
                 title: title,
                 description: description,
-                deadline: deadlineTimeStamp ?? Timestamp.now(), // Set the deadline here
+                deadline: deadlineTimeStamp ?? Timestamp.now(),
               );
 
               await firestoreService.addTodo(newTodo, userId);

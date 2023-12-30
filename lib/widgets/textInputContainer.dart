@@ -5,12 +5,14 @@ class TextInputContainer extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final VoidCallback? onTap;
+  final bool? isEnabled;
   const TextInputContainer(
       {super.key,
       required this.label,
       required this.controller,
       required this.hintText,
-      this.onTap});
+      this.onTap,
+      this.isEnabled});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,10 @@ class TextInputContainer extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             label,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         TextFormField(
@@ -39,5 +44,4 @@ class TextInputContainer extends StatelessWidget {
       ],
     );
   }
-  
 }
