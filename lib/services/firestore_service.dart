@@ -13,6 +13,7 @@ class FirestoreService {
         'userId': userId,  // Ekledik: ToDo'nun hangi kullanıcıya ait olduğunu belirtmek için userId
         'title': todo.title,
         'description': todo.description,
+        'deadline':todo.deadline,
       });
 
       Fluttertoast.showToast(msg: "ToDo added successfully");
