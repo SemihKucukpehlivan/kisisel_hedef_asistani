@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kisisel_hedef_asistani/screens/createToDoScreen.dart';
+import 'package:kisisel_hedef_asistani/screens/listTodoScreen.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class MenuScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildCard(context, "Toplam Adım Sayar",CreateToDoScreen()),
-                    _buildCard(context, "Hedefler",CreateToDoScreen()),
+                    _buildCard(context, "Hedefler",TodoListScreen()),
                   ],
                 ),
                 const SizedBox(height: 16),

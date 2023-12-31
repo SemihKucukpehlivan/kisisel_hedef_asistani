@@ -8,19 +8,72 @@ class FirestoreService {
   Future<void> addTodo(ToDo todo, String userId) async {
     try {
       CollectionReference todosCollection = firestore.collection('todos');
-
       await todosCollection.add({
         'userId': userId,
         'title': todo.title,
         'description': todo.description,
-        'deadline':todo.deadline,
+        'deadline': todo.deadline,
       });
-
       Fluttertoast.showToast(msg: "ToDo added successfully");
     } catch (e) {
-      Fluttertoast.showToast(msg: "Error adding ToDo: $e", toastLength: Toast.LENGTH_LONG);
+      Fluttertoast.showToast(
+          msg: "Error adding ToDo: $e", toastLength: Toast.LENGTH_LONG);
     }
   }
 
-  // Diğer CRUD işlemleri eklenmeli (update, delete, getTodos, vb.)
+  Future<List<ToDo>> getTodos(String userId) async {
+    List<ToDo> todoList = [];
+    QuerySnapshot querySnapshot = await firestore
+        .collection('todos')
+        .where('userId', isEqualTo: userId)
+        .get();
+
+    for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+      String id = documentSnapshot.id;
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
+
+      ToDo todo = ToDo.fromMap(id, data);
+      todoList.add(todo);
+    }
+    return todoList;
+  }
+
+  Future<void> updateTodo(ToDo todo) async {
+    try {
+      CollectionReference todosCollection = firestore.collection('todos');
+
+      // ToDo'nun referansını alıyoruz
+      DocumentReference documentReference = todosCollection.doc(todo.id);
+
+      // ToDo'yu güncelliyoruz
+      await documentReference.update({
+        'title': todo.title,
+        'description': todo.description,
+        'deadline': todo.deadline,
+      });
+
+      Fluttertoast.showToast(msg: "ToDo updated successfully");
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Error updating ToDo: $e", toastLength: Toast.LENGTH_LONG);
+    }
+  }
+
+  Future<void> deleteTodo(String todoId) async {
+    try {
+      CollectionReference todosCollection = firestore.collection('todos');
+
+      // ToDo'nun referansını alıyoruz
+      DocumentReference documentReference = todosCollection.doc(todoId);
+
+      // ToDo'yu siliyoruz
+      await documentReference.delete();
+
+      Fluttertoast.showToast(msg: "ToDo deleted successfully");
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Error deleting ToDo: $e", toastLength: Toast.LENGTH_LONG);
+    }
+  }
 }

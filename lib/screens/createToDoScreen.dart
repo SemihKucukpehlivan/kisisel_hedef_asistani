@@ -63,7 +63,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
                 description: description,
                 deadline: deadlineTimeStamp ?? Timestamp.now(),
               );
-
+              
               await firestoreService.addTodo(newTodo, userId);
 
               Navigator.pop(context);
