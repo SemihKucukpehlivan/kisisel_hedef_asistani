@@ -6,12 +6,14 @@ class TextInputContainer extends StatelessWidget {
   final String hintText;
   final VoidCallback? onTap;
   final bool? isEnabled;
+  final int? lines;
   const TextInputContainer(
       {super.key,
       required this.label,
       required this.controller,
       required this.hintText,
       this.onTap,
+      this.lines,
       this.isEnabled});
 
   @override
@@ -30,6 +32,7 @@ class TextInputContainer extends StatelessWidget {
           ),
         ),
         TextFormField(
+          maxLines: lines,
           onTap: onTap,
           controller: controller,
           decoration: InputDecoration(

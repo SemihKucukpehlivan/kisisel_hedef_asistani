@@ -16,7 +16,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _dateController =
-      TextEditingController(text: "Please Enter Exercise Deadline");
+      TextEditingController(text: "Select Deadline");
 
   final FirestoreService firestoreService = FirestoreService();
 
@@ -26,55 +26,120 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 27, 133, 1),
       appBar: AppBar(
-        title: const Text("Create Events Page"),
+        title: const Text(
+          "Create Events Page",
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic),
+        ),
+        backgroundColor: Colors.transparent,
       ),
-      body: Column(children: [
-        TextInputContainer(
-          label: "Title",
-          controller: _titleController,
-          hintText: "Please Enter Exercise Title",
-        ),
-        TextInputContainer(
-          label: "Description",
-          controller: _descriptionController,
-          hintText: "Please Enter Exercise Description",
-        ),
-        TextInputContainer(
-          label: "Deadline Date",
-          controller: _dateController,
-          hintText: "Please Enter Exercise Deadline",
-          isEnabled: false,
-          onTap: _datePick,
-        ),
-        // Save Button
-        ElevatedButton(
-          onPressed: () async {
-            User? user = FirebaseAuth.instance.currentUser;
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              decoration: BoxDecoration(
+                  color: const Color.fromRGBO(188, 235, 0, 75),
+                  borderRadius: BorderRadius.circular(25)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: [
+                  TextInputContainer(
+                    label: "Title",
+                    controller: _titleController,
+                    hintText: "Please Enter Exercise Title",
+                  ),
+                  TextInputContainer(
+                    label: "Description",
+                    controller: _descriptionController,
+                    hintText: "Please Enter Exercise Description",
+                    lines: 3,
+                  ),
+                  TextInputContainer(
+                    label: "Deadline Date",
+                    controller: _dateController,
+                    hintText: "Select Deadline",
+                    isEnabled: false,
+                    onTap: _datePick,
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        width: 150,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                _titleController.clear();
+                                _descriptionController.clear();
+                                _dateController.clear();
+                              });
+                            },
+                            child: const Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic),
+                            )),
+                      ),
+                      // Save Button
+                      SizedBox(
+                        width: 150,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue),
+                          onPressed: () async {
+                            User? user = FirebaseAuth.instance.currentUser;
 
-            if (user != null) {
-              String userId = user.uid;
-              String title = _titleController.text;
-              String description = _descriptionController.text;
+                            if (user != null) {
+                              String userId = user.uid;
+                              String title = _titleController.text;
+                              String description = _descriptionController.text;
 
-              ToDo newTodo = ToDo(
-                userId: userId,
-                title: title,
-                description: description,
-                deadline: deadlineTimeStamp ?? Timestamp.now(),
-              );
-              
-              await firestoreService.addTodo(newTodo, userId);
+                              ToDo newTodo = ToDo(
+                                userId: userId,
+                                title: title,
+                                description: description,
+                                deadline: deadlineTimeStamp ?? Timestamp.now(),
+                              );
 
-              Navigator.pop(context);
-            }
-          },
-          child: const Text("Save"),
+                              await firestoreService.addTodo(newTodo, userId);
+
+                              // ignore: use_build_context_synchronously
+                              Navigator.pop(context,true);
+                              
+                            }
+                          },
+                          child: const Text(
+                            "Save",
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ),
+            ),
+          ),
         ),
-      ]),
+      ),
     );
   }
-
   void _datePick() async {
     picked = await showDatePicker(
       context: context,

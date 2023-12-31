@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:kisisel_hedef_asistani/model/model.dart';
+import 'package:kisisel_hedef_asistani/screens/createToDoScreen.dart';
 import 'package:kisisel_hedef_asistani/services/firestore_service.dart';
 import 'package:kisisel_hedef_asistani/widgets/textInputContainer.dart';
 
@@ -18,8 +19,17 @@ class _TodoListScreenState extends State<TodoListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 27, 133, 1),
       appBar: AppBar(
-        title: Text('Todo List'),
+        title: const Text(
+          "To Do Lists",
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic),
+        ),
+        backgroundColor: Colors.transparent,
       ),
       body: FutureBuilder<List<ToDo>>(
         future: _todosFuture,
@@ -36,34 +46,71 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ToDo todo = todos[index];
                 String formattedDate =
                     DateFormat.yMd().format(todo.deadline.toDate());
-                return Card(
-                  child: ListTile(
-                    title: Text(todo.title),
-                    subtitle: Text(todo.description),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text("Deadline: $formattedDate"),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
+                return Dismissible(
+                  key: Key(todo.id!),
+                  onDismissed: (direction) {
+                    if (direction == DismissDirection.startToEnd) {
+                      _editTodo(todo);
+                    } else {
+                      _deleteTodo(todo);
+                    }
+                  },
+                  background: Container(
+                    alignment: Alignment.centerLeft,
+                    color: Colors.blue,
+                    child: const Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Icon(
+                        Icons.save,
+                        color: Colors.white,
+                        size: 75,
+                      ),
+                    ),
+                  ),
+                  secondaryBackground: Container(
+                    alignment: Alignment.centerRight,
+                    color: Colors.red,
+                    child: const Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                        size: 75,
+                      ),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: ListTile(
+                        title: Text(
+                          todo.title,
+                          style: const TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () {
-                                _editTodo(todo);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                _deleteTodo(todo);
-                              },
+                            Text(
+                              todo.description,
+                              style: const TextStyle(
+                                  fontSize: 15, color: Colors.black),
                             ),
                           ],
                         ),
-                      ],
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              formattedDate,
+                              style: const TextStyle(
+                                  fontSize: 15, color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 );
@@ -71,6 +118,20 @@ class _TodoListScreenState extends State<TodoListScreen> {
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          var result = await Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => CreateToDoScreen(),
+          ));
+          if (result == true) {
+            _refreshTodos();
+          }
+        },
+        child: Icon(
+          Icons.add,
+          size: 50,
+        ),
       ),
     );
   }
