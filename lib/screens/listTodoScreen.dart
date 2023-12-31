@@ -158,7 +158,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
       if (todo.id != null) {
         await _firestoreService.deleteTodo(todo.id!);
 
-        // Refresh the list after deletion
         _refreshTodos();
       } else {
         Fluttertoast.showToast(
