@@ -76,4 +76,21 @@ class FirestoreService {
           msg: "Error deleting ToDo: $e", toastLength: Toast.LENGTH_LONG);
     }
   }
+
+  Future<void> saveTime(String time, String userId) async {
+    try {
+      CollectionReference times = firestore.collection("stopwatch_times");
+
+      await times.add({
+        "time": time,
+        "timestamp": FieldValue.serverTimestamp(),
+        "userId": userId,
+      });
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Error saving time: $e",
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+  }
 }

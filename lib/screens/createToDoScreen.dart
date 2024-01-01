@@ -44,7 +44,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
             child: Container(
               width: MediaQuery.of(context).size.width * 0.9,
               decoration: BoxDecoration(
-                  color: const Color.fromRGBO(188, 235, 0, 75),
+                  color: const Color.fromRGBO(255, 255, 255, 75),
                   borderRadius: BorderRadius.circular(25)),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -116,8 +116,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
                               await firestoreService.addTodo(newTodo, userId);
 
                               // ignore: use_build_context_synchronously
-                              Navigator.pop(context,true);
-                              
+                              Navigator.pop(context, true);
                             }
                           },
                           child: const Text(
@@ -140,6 +139,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
       ),
     );
   }
+
   void _datePick() async {
     picked = await showDatePicker(
       context: context,
