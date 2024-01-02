@@ -1,28 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kisisel_hedef_asistani/model/pedometerModel.dart';
+import 'package:kisisel_hedef_asistani/model/stopwatchModel.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartGraphics extends StatefulWidget {
-  ChartGraphics({Key? key}) : super(key: key);
+  const ChartGraphics({Key? key}) : super(key: key);
 
   @override
   _ChartGraphicsState createState() => _ChartGraphicsState();
 }
 
 class _ChartGraphicsState extends State<ChartGraphics> {
-  List<PedometerModel> data = [];
+  List<PedometerModel> stepData = [];
+  List<StopwatchData> stopwatchData = [];
   User? user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _updateData();
+    _updateStepData();
+    _fetchStopwatchData();
   }
 
-  void _updateData() async {
+  void _updateStepData() async {
     if (user != null) {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await FirebaseFirestore.instance
@@ -39,9 +43,46 @@ class _ChartGraphicsState extends State<ChartGraphics> {
       }).toList();
 
       setState(() {
-        data = newDataList;
+        stepData = newDataList;
       });
     }
+  }
+
+  Future<void> _fetchStopwatchData() async {
+    try {
+      if (user != null) {
+        QuerySnapshot<Map<String, dynamic>> querySnapshot =
+            await FirebaseFirestore.instance
+                .collection("stopwatch_times")
+                .where("userId", isEqualTo: user!.uid)
+                .get();
+
+        List<StopwatchData> newDataList = querySnapshot.docs
+            .map((DocumentSnapshot<Map<String, dynamic>> doc) {
+          return StopwatchData(
+            doc["time"],
+            doc["timestamp"],
+          );
+        }).toList();
+
+        setState(() {
+          stopwatchData = newDataList;
+        });
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Error fetching stopwatch data: $e",
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
+  }
+
+  int _timeStringToSeconds(String timeString) {
+    List<String> parts = timeString.split(':');
+    int hours = int.parse(parts[0]);
+    int minutes = int.parse(parts[1]);
+    int seconds = int.parse(parts[2]);
+    return hours * 3600 + minutes * 60 + seconds;
   }
 
   @override
@@ -50,22 +91,49 @@ class _ChartGraphicsState extends State<ChartGraphics> {
       appBar: AppBar(
         title: const Text('Syncfusion Flutter chart'),
       ),
-      body: SfCartesianChart(
-        primaryXAxis: CategoryAxis(),
-        // Chart title
-        title: ChartTitle(text: 'Half yearly sales analysis'),
-        // Enable legend
-        legend: Legend(isVisible: true),
-        // Enable tooltip
-        tooltipBehavior: TooltipBehavior(enable: true),
-        series: <CartesianSeries<PedometerModel, String>>[
-          LineSeries<PedometerModel, String>(
-            dataSource: data,
-            xValueMapper: (PedometerModel steps, _) => steps.day,
-            yValueMapper: (PedometerModel steps, _) => steps.steps,
-            name: 'steps',
-            // Enable data label
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          SfCartesianChart(
+            primaryXAxis: CategoryAxis(),
+            // Chart title
+            title: ChartTitle(text: 'Step Count'),
+            // Enable tooltip
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <CartesianSeries<PedometerModel, String>>[
+              LineSeries<PedometerModel, String>(
+                dataSource: stepData,
+                xValueMapper: (PedometerModel steps, _) => steps.day,
+                yValueMapper: (PedometerModel steps, _) => steps.steps,
+                name: 'steps',
+                // Enable data label
+                dataLabelSettings: const DataLabelSettings(isVisible: true),
+              ),
+            ],
+          ),
+          SfCartesianChart(
+            primaryXAxis:
+                CategoryAxis(), // Kategorik ekseni kullanabilirsiniz, aşağıdaki örnekte kategori ekseni kullanılmıştır
+            title: ChartTitle(text: 'Stopwatch Times'),
+            tooltipBehavior: TooltipBehavior(enable: true),
+            series: <ChartSeries>[
+              ScatterSeries<StopwatchData, String>(
+                dataSource: stopwatchData,
+                yValueMapper: (StopwatchData data, _) {
+                  // Assuming data.time is a String representing a time duration (e.g., "00:00:02")
+                  return _timeStringToSeconds(data.time);
+                },
+                xValueMapper: (StopwatchData data, _) {
+                  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
+                      data.timestamp.millisecondsSinceEpoch);
+                  String month = dateTime.month.toString().padLeft(2, '0');
+                  String day = dateTime.day.toString().padLeft(2, '0');
+                  return '$month-$day';
+                },
+                name: 'Stopwatch Times',
+                dataLabelSettings: const DataLabelSettings(isVisible: true),
+              ),
+            ],
           ),
         ],
       ),

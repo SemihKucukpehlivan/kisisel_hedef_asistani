@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kisisel_hedef_asistani/model/stopwatchModel.dart';
 import 'package:kisisel_hedef_asistani/model/toDoModel.dart';
 import 'package:kisisel_hedef_asistani/model/pedometerModel.dart';
 
@@ -78,13 +79,13 @@ class FirestoreService {
     }
   }
 
-  Future<void> saveTime(String time, String userId) async {
+  Future<void> saveTime(StopwatchData stopwatch, String userId) async {
     try {
       CollectionReference times = firestore.collection("stopwatch_times");
 
       await times.add({
-        "time": time,
-        "timestamp": FieldValue.serverTimestamp(),
+        "time": stopwatch.time,
+        "timestamp": stopwatch.timestamp,
         "userId": userId,
       });
     } catch (e) {

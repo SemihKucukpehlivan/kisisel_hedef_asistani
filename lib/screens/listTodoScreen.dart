@@ -71,7 +71,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     alignment: Alignment.centerRight,
                     color: Colors.red,
                     child: const Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding:  EdgeInsets.all(16.0),
                       child: Icon(
                         Icons.delete,
                         color: Colors.white,

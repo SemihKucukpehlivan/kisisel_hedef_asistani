@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kisisel_hedef_asistani/model/stopwatchModel.dart';
 import 'package:kisisel_hedef_asistani/services/firestore_service.dart';
 
 class StopWatchScreen extends StatefulWidget {
@@ -15,18 +17,17 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
   final User? _user = FirebaseAuth.instance.currentUser;
   late Timer _timer;
 
-  @override
-  void initState() {
-    super.initState();
-    _stopwatch.stop();
+  void _stopStopwatch() {
+    setState(() {
+      _stopwatch.stop();
+      _timer.cancel(); // Cancel the timer
+    });
   }
 
   @override
   void dispose() {
     _stopwatch.stop();
-    if (_timer.isActive) {
-      _timer.cancel();
-    }
+    _timer.cancel();
     super.dispose();
   }
 
@@ -36,12 +37,13 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
       backgroundColor: const Color.fromARGB(255, 27, 133, 1),
       appBar: AppBar(
         title: const Text(
-          "To Do Lists",
+          "Stopwatch",
           style: TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic),
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
         ),
         backgroundColor: Colors.transparent,
       ),
@@ -50,8 +52,9 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.7,
           decoration: BoxDecoration(
-              color: const Color.fromRGBO(255, 255, 255, 75),
-              borderRadius: BorderRadius.circular(25)),
+            color: const Color.fromRGBO(255, 255, 255, 75),
+            borderRadius: BorderRadius.circular(25),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,15 +65,27 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                   fontSize: 75,
                 ),
               ),
-              SizedBox(height: 35),
+              const SizedBox(height: 35),
               _buildElevatedButton(
-                  text: "Start", onTap: _startStopwatch, color: Colors.blue),
+                text: "Start",
+                onTap: _startStopwatch,
+                color: Colors.blue,
+              ),
               _buildElevatedButton(
-                  text: "Stop", onTap: _stopStopwatch, color: Colors.orange),
+                text: "Stop",
+                onTap: _stopStopwatch,
+                color: Colors.orange,
+              ),
               _buildElevatedButton(
-                  color: Colors.red, onTap: _resetStopwatch, text: "Reset"),
+                color: Colors.red,
+                onTap: _resetStopwatch,
+                text: "Reset",
+              ),
               _buildElevatedButton(
-                  text: "Save", onTap: _saveTimeToFirebase, color: Colors.green)
+                text: "Save",
+                onTap: _saveTimeToFirebase,
+                color: Colors.green,
+              ),
             ],
           ),
         ),
@@ -80,14 +95,8 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
 
   void _startStopwatch() {
     _stopwatch.start();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _updateElapsedTime();
-    });
-  }
-
-  void _stopStopwatch() {
-    setState(() {
-      _stopwatch.stop();
     });
   }
 
@@ -120,18 +129,21 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
     if (_user != null) {
       String userUid = _user.uid;
       FirestoreService firestoreService = FirestoreService();
-      // FirestoreService'deki saveTime metodunu çağırın
-      await firestoreService.saveTime(_elapsedTime, userUid);
+      StopwatchData stopwatchData =
+          StopwatchData(_elapsedTime, Timestamp.now());
+      await firestoreService.saveTime(stopwatchData, userUid);
+
       Fluttertoast.showToast(msg: "Time saved successfully");
     }
   }
 
-  Widget _buildElevatedButton(
-      {required String text,
-      required VoidCallback onTap,
-      required Color color}) {
+  Widget _buildElevatedButton({
+    required String text,
+    required VoidCallback onTap,
+    required Color color,
+  }) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.075,
