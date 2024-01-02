@@ -42,8 +42,8 @@ dependencies:
   google_sign_in: ^6.2.1
   intl: ^0.17.0
   syncfusion_flutter_charts: ^21.2.4
-  pedometer: ^4.0.1
-  flutter_sensors: ^0.7.0
+  permission_handler: ^11.1.0
+  firebase_messaging: ^14.7.9
   
   
 

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kisisel_hedef_asistani/api/firebaseApi.dart';
 import 'package:kisisel_hedef_asistani/firebase_options.dart';
 import 'package:kisisel_hedef_asistani/screens/loginAndSignUpScreen/loginScreen.dart';
 
@@ -8,6 +9,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseApi().initNotifications();
   runApp(const MyApp());
 }
 
