@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kisisel_hedef_asistani/model/model.dart';
+import 'package:kisisel_hedef_asistani/model/toDoModel.dart';
+import 'package:kisisel_hedef_asistani/model/pedometerModel.dart';
 
 class FirestoreService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -91,6 +92,22 @@ class FirestoreService {
         msg: "Error saving time: $e",
         toastLength: Toast.LENGTH_LONG,
       );
+    }
+  }
+
+  Future<void> addPedometer(
+      PedometerModel pedometerModel, String userId) async {
+    try {
+      CollectionReference pedometerCollection =
+          FirebaseFirestore.instance.collection("pedometer");
+
+      await pedometerCollection.add({
+        "userId": userId,
+        "day": pedometerModel.day,
+        "steps": pedometerModel.steps,
+      });
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: "Error! Data not saved $e");
     }
   }
 }

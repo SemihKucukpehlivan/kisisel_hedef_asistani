@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:kisisel_hedef_asistani/model/model.dart';
+import 'package:kisisel_hedef_asistani/model/toDoModel.dart';
 import 'package:kisisel_hedef_asistani/screens/createToDoScreen.dart';
 import 'package:kisisel_hedef_asistani/services/firestore_service.dart';
 import 'package:kisisel_hedef_asistani/widgets/textInputContainer.dart';

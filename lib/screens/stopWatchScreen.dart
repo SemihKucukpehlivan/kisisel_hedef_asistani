@@ -25,7 +25,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
   void dispose() {
     _stopwatch.stop();
     if (_timer.isActive) {
-      _timer.cancel(); // Timer'ı dispose et
+      _timer.cancel();
     }
     super.dispose();
   }
@@ -118,7 +118,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
 
   void _saveTimeToFirebase() async {
     if (_user != null) {
-      String userUid = _user!.uid;
+      String userUid = _user.uid;
       FirestoreService firestoreService = FirestoreService();
       // FirestoreService'deki saveTime metodunu çağırın
       await firestoreService.saveTime(_elapsedTime, userUid);

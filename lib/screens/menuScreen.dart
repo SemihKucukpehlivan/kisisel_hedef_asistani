@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kisisel_hedef_asistani/screens/createToDoScreen.dart';
+import 'package:kisisel_hedef_asistani/screens/chartGraphic.dart';
 import 'package:kisisel_hedef_asistani/screens/listTodoScreen.dart';
+import 'package:kisisel_hedef_asistani/screens/pedometerScreen.dart';
 import 'package:kisisel_hedef_asistani/screens/stopWatchScreen.dart';
 import 'package:kisisel_hedef_asistani/widgets/cardWidget.dart';
 
@@ -32,9 +33,9 @@ class MenuScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const CardWidget(
+                      CardWidget(
                           title: "Exercise",
-                          nextPage: CreateToDoScreen(),
+                          nextPage: PedometerScreen(),
                           imagePath: "assets/images/exercise.png"),
                       CardWidget(
                           title: "To Do",
@@ -47,12 +48,12 @@ class MenuScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       CardWidget(
-                          title: 'Calendar',
+                          title: 'Stopwatch',
                           nextPage: StopWatchScreen(),
-                          imagePath: "assets/images/indir.png"),
+                          imagePath: "assets/images/stopwatch.png"),
                       CardWidget(
                           title: "Graphics",
-                          nextPage: TodoListScreen(),
+                          nextPage: ChartGraphics(),
                           imagePath: "assets/images/grafik.png")
                     ],
                   ),

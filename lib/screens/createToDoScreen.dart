@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kisisel_hedef_asistani/model/model.dart';
+import 'package:kisisel_hedef_asistani/model/toDoModel.dart';
 import 'package:kisisel_hedef_asistani/services/firestore_service.dart';
 import 'package:kisisel_hedef_asistani/widgets/textInputContainer.dart';
 
