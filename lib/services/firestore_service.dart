@@ -45,10 +45,8 @@ class FirestoreService {
     try {
       CollectionReference todosCollection = firestore.collection('todos');
 
-      // ToDo'nun referansını alıyoruz
       DocumentReference documentReference = todosCollection.doc(todo.id);
 
-      // ToDo'yu güncelliyoruz
       await documentReference.update({
         'title': todo.title,
         'description': todo.description,
@@ -66,10 +64,7 @@ class FirestoreService {
     try {
       CollectionReference todosCollection = firestore.collection('todos');
 
-      // ToDo'nun referansını alıyoruz
       DocumentReference documentReference = todosCollection.doc(todoId);
-
-      // ToDo'yu siliyoruz
       await documentReference.delete();
 
       Fluttertoast.showToast(msg: "ToDo deleted successfully");

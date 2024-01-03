@@ -1,110 +1,59 @@
-/* import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_sensors/flutter_sensors.dart';
 
+class PedometerScreen extends StatefulWidget {
+  const PedometerScreen({super.key});
 
-class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: StepCounter(),
-    );
-  }
+  State<PedometerScreen> createState() => _PedometerScreenState();
 }
 
-class StepCounter extends StatefulWidget {
-  @override
-  _StepCounterState createState() => _StepCounterState();
-}
-
-class _StepCounterState extends State<StepCounter> {
-  bool _accelAvailable = false;
-  List<double> _accelData = List.filled(3, 0.0);
-  StreamSubscription? _accelSubscription;
-  int stepCount = 0;
-
-  @override
-  void initState() {
-    _checkAccelerometerStatus();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _stopAccelerometer();
-    super.dispose();
-  }
-
-  void _checkAccelerometerStatus() async {
-    await SensorManager()
-        .isSensorAvailable(Sensors.ACCELEROMETER)
-        .then((result) {
-      setState(() {
-        _accelAvailable = result;
-      });
-      if (_accelAvailable) {
-        _startAccelerometer();
-      }
-    });
-  }
-
-  void _startAccelerometer() async {
-    if (_accelSubscription != null) return;
-    if (_accelAvailable) {
-      final stream = await SensorManager().sensorUpdates(
-        sensorId: Sensors.ACCELEROMETER,
-        interval: Sensors.SENSOR_DELAY_FASTEST,
-      );
-      _accelSubscription = stream.listen((sensorEvent) {
-        setState(() {
-          _accelData = sensorEvent.data;
-
-          // Adım sayma algoritması
-          if (_isStep(_accelData[1])) {
-            stepCount++;
-          }
-        });
-      });
-    }
-  }
-
-  bool _isStep(double yValue) {
-    // Basit adım sayma algoritması
-    if (yValue < -8.0) {
-      return true;
-    }
-    return false;
-  }
-
-  void _stopAccelerometer() {
-    if (_accelSubscription == null) return;
-    _accelSubscription?.cancel();
-    _accelSubscription = null;
-  }
-
+class _PedometerScreenState extends State<PedometerScreen> {
+  String? stepCounter;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 27, 133, 1),
       appBar: AppBar(
-        title: Text('Step Counter'),
+        title: const Text(
+          "Pedometer",
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic),
+        ),
+        backgroundColor: Colors.transparent,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Adım Sayısı:',
-              style: TextStyle(fontSize: 20),
+          child: Column(
+        children: [
+          Image.asset("assets/images/running.png"),
+          Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                stepCounter == null
+                    ? "?"
+                    : stepCounter.toString(),
+                style: TextStyle(fontSize: 45, color: Colors.white),
+              )),
+          const SizedBox(
+            height: 25,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              child: const Text(
+                "Reset",
+                style: TextStyle(color: Colors.white,fontSize: 25),
+              ),
             ),
-            Text(
-              '$stepCount',
-              style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
+          )
+        ],
+      )),
     );
   }
 }
- */

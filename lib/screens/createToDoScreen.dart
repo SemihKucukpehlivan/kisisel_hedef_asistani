@@ -33,7 +33,7 @@ class _CreateToDoScreenState extends State<CreateToDoScreen> {
           style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic),
+              fontStyle: FontStyle.italic,color: Colors.white),
         ),
         backgroundColor: Colors.transparent,
       ),

@@ -17,13 +17,6 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
   final User? _user = FirebaseAuth.instance.currentUser;
   late Timer _timer;
 
-  void _stopStopwatch() {
-    setState(() {
-      _stopwatch.stop();
-      _timer.cancel(); // Cancel the timer
-    });
-  }
-
   @override
   void dispose() {
     _stopwatch.stop();
@@ -93,10 +86,19 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
     );
   }
 
+  void _stopStopwatch() {
+    setState(() {
+      _stopwatch.stop();
+      _timer.cancel(); // Cancel the timer
+    });
+  }
+
   void _startStopwatch() {
-    _stopwatch.start();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _updateElapsedTime();
+    setState(() {
+      _stopwatch.start();
+      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        _updateElapsedTime();
+      });
     });
   }
 

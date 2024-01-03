@@ -24,7 +24,7 @@ class AuthService {
         registerUser(email: email, password: password, name: name);
         navigator.push(
           MaterialPageRoute(
-            builder: (context) => const MenuScreen(),
+            builder: (context) => MenuScreen(),
           ),
         );
       }
@@ -44,7 +44,7 @@ class AuthService {
           .signInWithEmailAndPassword(email: email, password: password);
       if (userCredential.user != null) {
         navigator.push(MaterialPageRoute(
-          builder: (context) => const MenuScreen(),
+          builder: (context) => MenuScreen(),
         ));
       }
     } on FirebaseAuthException catch (e) {
@@ -57,9 +57,11 @@ class AuthService {
     required String password,
     required String name,
   }) async {
-    await userCollection
-        .doc()
-        .set({"fullname": name, "mail": email, "password": password});
+    await userCollection.doc().set({
+      "fullname": name,
+      "mail": email,
+      "password": password,
+    });
   }
 
   Future<String?> signInWithGoogle() async {

@@ -88,54 +88,75 @@ class _ChartGraphicsState extends State<ChartGraphics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 27, 133, 1),
       appBar: AppBar(
-        title: const Text('Syncfusion Flutter chart'),
+        title: const Text(
+          "Graphics",
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic),
+        ),
+        backgroundColor: Colors.transparent,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          SfCartesianChart(
-            primaryXAxis: CategoryAxis(),
-            // Chart title
-            title: ChartTitle(text: 'Step Count'),
-            // Enable tooltip
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <CartesianSeries<PedometerModel, String>>[
-              LineSeries<PedometerModel, String>(
-                dataSource: stepData,
-                xValueMapper: (PedometerModel steps, _) => steps.day,
-                yValueMapper: (PedometerModel steps, _) => steps.steps,
-                name: 'steps',
-                // Enable data label
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(23),
+                color: Colors.white,
               ),
-            ],
-          ),
-          SfCartesianChart(
-            primaryXAxis:
-                CategoryAxis(), // Kategorik ekseni kullanabilirsiniz, aşağıdaki örnekte kategori ekseni kullanılmıştır
-            title: ChartTitle(text: 'Stopwatch Times'),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <ChartSeries>[
-              ScatterSeries<StopwatchData, String>(
-                dataSource: stopwatchData,
-                yValueMapper: (StopwatchData data, _) {
-                  // Assuming data.time is a String representing a time duration (e.g., "00:00:02")
-                  return _timeStringToSeconds(data.time);
-                },
-                xValueMapper: (StopwatchData data, _) {
-                  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
-                      data.timestamp.millisecondsSinceEpoch);
-                  String month = dateTime.month.toString().padLeft(2, '0');
-                  String day = dateTime.day.toString().padLeft(2, '0');
-                  return '$month-$day';
-                },
-                name: 'Stopwatch Times',
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
+              child: SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
+                title: ChartTitle(text: 'Step Count'),
+                tooltipBehavior: TooltipBehavior(enable: true),
+                series: <CartesianSeries<PedometerModel, String>>[
+                  LineSeries<PedometerModel, String>(
+                    dataSource: stepData,
+                    xValueMapper: (PedometerModel steps, _) => steps.day,
+                    yValueMapper: (PedometerModel steps, _) => steps.steps,
+                    name: 'steps',
+                    // Enable data label
+                    dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(23),
+                color: Colors.white,
+              ),
+              child: SfCartesianChart(
+                primaryXAxis: CategoryAxis(),
+                title: ChartTitle(text: 'Stopwatch Times'),
+                tooltipBehavior: TooltipBehavior(enable: true),
+                series: <ChartSeries>[
+                  ScatterSeries<StopwatchData, String>(
+                    dataSource: stopwatchData,
+                    yValueMapper: (StopwatchData data, _) {
+                      // Assuming data.time is a String representing a time duration (e.g., "00:00:02")
+                      return _timeStringToSeconds(data.time);
+                    },
+                    xValueMapper: (StopwatchData data, _) {
+                      DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(
+                          data.timestamp.millisecondsSinceEpoch);
+                      String month = dateTime.month.toString().padLeft(2, '0');
+                      String day = dateTime.day.toString().padLeft(2, '0');
+                      return '$month-$day';
+                    },
+                    name: 'Stopwatch Times',
+                    dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

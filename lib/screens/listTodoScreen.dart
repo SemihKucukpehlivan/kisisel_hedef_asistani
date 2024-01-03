@@ -22,7 +22,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
       backgroundColor: const Color.fromARGB(255, 27, 133, 1),
       appBar: AppBar(
         title: const Text(
-          "To Do Lists",
+          "To Do List",
           style: TextStyle(
               color: Colors.white,
               fontSize: 25,
@@ -71,7 +71,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                     alignment: Alignment.centerRight,
                     color: Colors.red,
                     child: const Padding(
-                      padding:  EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Icon(
                         Icons.delete,
                         color: Colors.white,
@@ -185,11 +185,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                // Get updated values
                 String editedTitle = editedTitleController.text;
                 String editedDescription = editedDescriptionController.text;
-
-                // Create an updated ToDo object
                 ToDo updatedTodo = ToDo(
                   id: todo.id,
                   userId: todo.userId,
@@ -199,8 +196,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 );
 
                 _refreshTodos();
-
-                // Call the FirestoreService to update the ToDo
                 await _firestoreService.updateTodo(updatedTodo);
 
                 // Dismiss the dialog
