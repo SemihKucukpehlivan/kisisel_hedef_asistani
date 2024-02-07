@@ -1,6 +1,9 @@
 # kisisel_hedef_asistani
 
-![login](https://github.com/SemihKucukpehlivan/kisisel_hedef_asistani/assets/94116102/288272df-833f-44e1-a48d-d401c6cbf987)
+<img src="![login](https://github.com/SemihKucukpehlivan/kisisel_hedef_asistani/assets/94116102/288272df-833f-44e1-a48d-d401c6cbf987)" alt="Login Page Metin" width="300" height="200">
+
+
+
 
 ![signUp](https://github.com/SemihKucukpehlivan/kisisel_hedef_asistani/assets/94116102/6044080f-9c90-4e77-9069-92e92f69a5db)
 
